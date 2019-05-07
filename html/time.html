@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div></div>
+		<script>
+//			1.页面加载后执行
+			window.onload = function(){
+				
+				var timer = null;
+				
+				function getTime(){
+					
+					clearTimeout(timer);
+	//				2.获取元素
+					var oDiv = document.getElementsByTagName("div")[0];
+
+	//				3.获取当前时间
+					var myDate = new Date();
+
+	//				4.年份
+					var oYear = myDate.getFullYear();	//2019
+
+	//				5.月份
+					var oMonth = myDate.getMonth()+1;	//4 (月份从0开始,12月为11)
+
+	//				6.日期
+					var oDate = myDate.getDate();	//8
+
+	//				7.星期
+					var weekArr = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"] 
+					var oDay = weekArr[myDate.getDay()];
+
+	//				8.小时
+					var oHour = myDate.getHours();
+
+	//				9.分钟
+					var oMinute = myDate.getMinutes();
+
+	//				10.秒
+					var oSecond = myDate.getSeconds();
+
+	//				11.毫秒数
+					var oMillionSecond = myDate.getMilliseconds();
+	//				格式: 2019-4-8 星期一  17:41:26
+
+					oDiv.innerHTML = oYear+"-"+addZero(oMonth)+"-"+addZero(oDate)+" "+oDay+" "+addZero(oHour)+":"+addZero(oMinute)+":"+addZero(oSecond);
+			
+					timer = setTimeout(getTime,1000);
+				}
+				getTime();
+//				加零函数	
+				function addZero(num){
+					if(num < 10){
+						return "0"+num;
+					}else{
+						return num;
+					}
+				}
+	
+			}
+		</script>
+	</body>
+</html>

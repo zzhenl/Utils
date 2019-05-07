@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			html,body,div,img,span{margin: 0; padding: 0;}
+			.container{
+				width: 1226px;
+				height: 460px;
+				margin: 50px auto;
+				position: relative;
+			}
+			.container img{
+				width: 100%;
+				height: 100%;
+			}
+			.img_box{
+				height: 460px;
+			}
+			.img_box img{
+				display: none;
+			}
+			
+			/*图片激活样式*/
+			.img_box .active{
+				display: block;
+			}
+			
+			/*切换的按钮*/
+			.span_box{
+				width: 150px;
+				height: 20px;
+				position: absolute;
+				right: 60px;
+				bottom: 30px;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+			}
+			.span_box span{
+				display: inline-block;
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				border: 2px solid #ccc;
+				background-color: rgba(0,0,0,.4);
+			}
+			.span_box .active_dot{
+				background-color: rgba(255,255,255,.5);
+			}
+			
+			.switch_btn span{
+				display: inline-block;
+				width: 41px;
+				height: 69px;
+				background: url("../img/icon-slides.png") no-repeat;
+				position: absolute;
+				top: 50%;
+				margin-top: -34.5px;
+			}
+			.switch_btn span:nth-child(1){
+				background-position-x: -83px;
+				left: 10px;
+			}
+			.switch_btn span:nth-child(2){
+				background-position-x: -124px;
+				right: 10px;
+			}
+			.switch_btn span:nth-child(1):hover{
+				background-position-x: 0;
+			}
+			.switch_btn span:nth-child(2):hover{
+				background-position-x: -41px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="img_box">
+				<img class="active" src="https://i1.mifile.cn/a4/xmad_15547798366135_YcVSe.jpg"/>
+				<img src="https://i1.mifile.cn/a4/xmad_15541194668557_Xpoxs.jpg"/>
+				<img src="https://i1.mifile.cn/a4/xmad_15547822805969_hxdoV.jpg" />
+				<img src="https://i1.mifile.cn/a4/xmad_15540348357918_QhSfb.jpg"/>
+				<img src="https://i1.mifile.cn/a4/xmad_15547163541041_ipebP.jpg"/>
+			</div>
+			<div class="span_box">
+				<span class="active_dot"></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<div class="switch_btn">
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+		
+		<script>
+			
+//			1.页面加载后执行			
+			window.onload = function(){
+				
+//				2.获取元素
+				var oCon = document.getElementsByClassName("container")[0];
+				var aImg = document.getElementsByTagName("img");	//图片
+				var spanBoxDiv = document.getElementsByClassName("span_box")[0];
+				var dots = spanBoxDiv.getElementsByTagName("span");	//小点进行切换
+				var switchBtn = document.getElementsByClassName("switch_btn")[0];
+				var directsBtn = switchBtn.getElementsByTagName("span");	//左右切换
+				var ind = 0;	//设置下标初始值
+				var timer = null;
+				
+//				3.循环绑定小圆圈切换事件
+				for(var i=0; i<dots.length; i++){
+					
+//					4.另存下标
+					dots[i].index = i;
+					
+					dots[i].onclick = function(){
+						
+//						5.重置样式
+						resetCSS();
+						
+//						6.对应下标激活样式
+						activeCSS(this.index);
+						
+//						7.对应下标赋值给ind
+						ind = this.index;
+						
+					}
+					
+				}
+				
+//				7.绑定左切换
+				directsBtn[0].onclick = function(){
+					
+//					8.判断是否为第一个
+					if(ind == 0){
+						ind = dots.length - 1;
+					}else{
+						ind--;
+					}
+//					9.重置样式
+					resetCSS();
+					
+//					10.激活样式
+					activeCSS(ind);
+					
+				}
+				
+//				11.绑定右切换事件
+				directsBtn[1].onclick = autoPlay;
+				
+				
+		
+//				12.设置定时器自动轮播	
+				clearInterval(timer);
+				timer = setInterval(autoPlay,1000);
+
+//				13.绑定鼠标移入事件,停止定时器
+				oCon.onmouseover = function(){
+					
+					clearInterval(timer);
+					
+				}
+				
+//				14.绑定鼠标移出事件,启动定时器
+				oCon.onmouseout = function(){
+					
+					clearInterval(timer);
+					timer = setInterval(autoPlay,1000);
+					
+				}
+		
+//				自动向右切换函数(由于向右切换和自动轮播是同样的操作,所以提取为一个函数)
+				function autoPlay(){
+					
+//					判断是否为最后一个
+					if(ind == dots.length - 1){
+						ind = 0;
+					}else{
+						ind++;
+					}
+//					重置样式
+					resetCSS();
+					
+//					激活样式
+					activeCSS(ind);
+					
+				}
+				
+//				重置样式函数
+				function resetCSS(){
+					for(var j=0; j<dots.length; j++){
+						dots[j].className = "";
+						aImg[j].className = "";
+					}
+				}
+				
+//				激活样式函数
+				function activeCSS(a){	//参数a为下标
+					
+					dots[a].className = "active_dot";
+					aImg[a].className = "active";
+					
+				}
+
+				
+			}
+			
+		</script>
+	</body>
+</html>
